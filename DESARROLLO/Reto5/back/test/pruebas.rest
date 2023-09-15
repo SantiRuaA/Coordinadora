@@ -1,0 +1,28 @@
+GET http://localhost:3030/premio
+
+###
+POST http://localhost:3030/premio
+Content-Type: application/json
+    
+    {
+        "nombre": "Viaje a la playa",
+        "descripcion": "Gano un viajesito a la playa",
+        "puntos": 200
+    }
+
+###
+
+PUT http://localhost:3030/premio/1
+Content-Type: application/json
+    
+    {
+        "nombre": "Viaje a mi casa",
+        "descripcion": "Gano un viajesito a mi casa",
+        "puntos": 100
+    }
+
+###
+DELETE http://localhost:3030/premio/1
+
+
+

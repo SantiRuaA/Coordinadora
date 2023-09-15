@@ -1,0 +1,54 @@
+GET http://localhost:3030/usuario
+###
+
+POST http://localhost:3030/usuario
+Content-Type: application/json
+
+{
+    "nombre": "Pedro",
+    "contrasena": "12345"
+}
+###
+POST http://localhost:3030/auth/login
+Content-Type: application/json
+    
+    {
+        "nombre": "juanfdsf",
+        "contrasena": "123456ghfg"
+    }
+
+###
+
+GET http://localhost:3030/ppt/obtenerRanking
+Content-Type: application/json
+
+{
+    "puntaje": 10,
+    "numIntentos": 3,
+    "fecha": "2021-10-10",
+    "idUsuario": 4
+}
+
+###
+GET http://localhost:3030/ppt/obtenerRanking
+
+###
+POST http://localhost:3030/categoria
+Content-Type: application/json
+
+{
+    "nombre": "TV"
+}
+
+###
+POST http://localhost:3030/palabra
+Content-Type: application/json
+
+{
+    "palabra": "PINGA",
+    "idCategoria": 1
+}
+
+
+
+

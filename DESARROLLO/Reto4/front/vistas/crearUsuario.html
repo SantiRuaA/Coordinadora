@@ -1,0 +1,27 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../main.css">
+    <title>Registro de Usuarios</title>
+</head>
+
+<body>
+    <div class="login-page">
+        <div class="form">
+            <form class="loginForm" id="registroForm" method="POST">
+                <input type="text" placeholder="nombre" name="nombre" id="nombre" />
+                <input type="password" placeholder="contrasena" name="contrasena" id="contrasena" />
+                <input type="text" placeholder="id" name="id" id="id" />
+                <button type="submit">Registrar</button>
+                <p class="message">Regresar <a href="index.html">Login</a></p>
+            </form>
+            <div id="mensaje"></div>
+        </div>
+    </div>
+
+    <script src="../js/crearUsuario.js"></script>
+</body>
+
+</html>
