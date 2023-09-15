@@ -12,8 +12,14 @@ const routes: Routes = [
     path: 'empleados',
     loadChildren: () => import('./views/empleados/empleado.module').then(m => m.EmpleadoModule)
   },
-  
-
+  {
+    path: 'premios',
+    loadChildren: () => import('./views/premios/premio.module').then(m => m.PremioModule)
+  },
+  {
+    path: 'puntajes',
+    loadChildren: () => import('./views/puntajes/puntaje.module').then(m => m.PuntajeModule)
+  },
 ];
 
 @NgModule({

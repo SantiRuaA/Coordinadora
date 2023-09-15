@@ -1,7 +1,9 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EmpleadoInterface } from '../../../models/empleado.interface';
-import { EmpleadoService } from '../../../services/api/empleado.service';
+import { PremioInterface } from 'src/app/models/premio.interface';
+import { PuntajeInterface } from '../../../models/puntaje.interface';
+import { PuntajeService } from '../../../services/api/puntaje.service';
 
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -10,11 +12,11 @@ import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-edit-empleado',
-  templateUrl: './edit-empleado.component.html',
-  styleUrls: ['./edit-empleado.component.css']
+  selector: 'app-edit-puntaje',
+  templateUrl: './edit-puntaje.component.html',
+  styleUrls: ['./edit-puntaje.component.css']
 })
-export class EditEmpleadoComponent implements OnInit, OnDestroy {
+export class EditPuntajeComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputPlaces') inputPlaces!: ElementRef;
 
@@ -24,35 +26,41 @@ export class EditEmpleadoComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private activatedRouter: ActivatedRoute,
-    private api: EmpleadoService,
+    private api: PuntajeService,
+    private renderer: Renderer2,
+    private dialog: MatDialog,
   ) { }
 
-  dataEmpleado: EmpleadoInterface[] = [];
+  dataPuntaje: PuntajeInterface[] = [];
+  empleado: EmpleadoInterface[] = [];
+  premio: PremioInterface[] = [];
   loading: boolean = true;
+
+  @ViewChild('viewMap') viewMap!: TemplateRef<any>;
 
 
   editForm = new FormGroup({
-    idEmpleado: new FormControl(''),
-    nombre: new FormControl('', Validators.required),
-    telefono: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]),
-    correo: new FormControl('', [Validators.required, Validators.pattern('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')]),
-    direccion: new FormControl('', Validators.required),
+    idPuntaje: new FormControl(''),
+    idEmpleado: new FormControl('', Validators.required),
+    idPremio: new FormControl('', Validators.required),
+    puntaje: new FormControl('', Validators.required),
   });
 
   ngOnInit(): void {
-    let id = this.activatedRouter.snapshot.paramMap.get('id');
+    let idPuntaje = this.activatedRouter.snapshot.paramMap.get('id');
     this.loading = true;
 
-    const forkJoinSub = forkJoin([this.api.getOneEmpleados(id)]).subscribe(
-      ([dataEmpleado]) => {
-        this.dataEmpleado = dataEmpleado ? [dataEmpleado] : [];
+    const forkJoinSub = forkJoin([this.api.getOnePuntajes(idPuntaje), this.api.getEmpleado(), this.api.getPremio()]).subscribe(
+      ([dataPuntaje, empleado, premio]) => {
+        this.dataPuntaje = dataPuntaje ? [dataPuntaje] : [];
         this.editForm.setValue({
-          'idEmpleado': this.dataEmpleado[0]?.idEmpleado || '',
-          'nombre': this.dataEmpleado[0]?.nombre || '',
-          'telefono': this.dataEmpleado[0]?.telefono || '',
-          'correo': this.dataEmpleado[0]?.correo || '',
-          'direccion': this.dataEmpleado[0]?.direccion || '',
+          'idPuntaje': this.dataPuntaje[0]?.idPuntaje || '',
+          'idEmpleado': this.dataPuntaje[0]?.idEmpleado || '',
+          'idPremio': this.dataPuntaje[0]?.idPremio || '',
+          'puntaje': this.dataPuntaje[0]?.puntaje || '',
         });
+        this.empleado = empleado;
+        this.premio = premio;
         this.loading = false;
       },
       (error) => {
@@ -67,7 +75,6 @@ export class EditEmpleadoComponent implements OnInit, OnDestroy {
     this.subscriptions.add(forkJoinSub);
   }
 
-
   ngOnDestroy(): void {
     // Desuscribirse de todas las suscripciones
     this.subscriptions.unsubscribe();
@@ -77,7 +84,7 @@ export class EditEmpleadoComponent implements OnInit, OnDestroy {
   postForm(id: any) {
     Swal.fire({
       icon: 'question',
-      title: '¿Está seguro de que deseas modificar este empleado?',
+      title: '¿Está seguro de que deseas modificar este puntaje?',
       showCancelButton: true,
       showCloseButton: true,
       allowOutsideClick: false,
@@ -87,15 +94,15 @@ export class EditEmpleadoComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.loading = true;
-        const putCltSub = this.api.putEmpleados(id).subscribe(
+        const putCltSub = this.api.putPuntajes(id).subscribe(
           (data) => {
             if (data.status == 'ok') {
               this.editForm.reset();
-              this.router.navigate(['empleados/list-empleados']);
+              this.router.navigate(['puntajes/list-puntajes']);
               Swal.fire({
                 icon: 'success',
-                title: 'Empleado modificado',
-                text: 'El empleado ha sido modificado exitosamente.',
+                title: 'Puntaje modificado',
+                text: 'El puntaje ha sido modificado exitosamente.',
                 toast: true,
                 showConfirmButton: false,
                 timer: 5000,
@@ -127,7 +134,6 @@ export class EditEmpleadoComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.loading = true;
-    this.router.navigate(['empleados/list-empleados']);
+    this.router.navigate(['puntajes/list-puntajes']);
   }
-
 }

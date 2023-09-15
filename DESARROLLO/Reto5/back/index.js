@@ -3,6 +3,7 @@ const port = 3030;
 const db = require('./src/db/database');
 const empleado = require('./src/routes/empleado');
 const premio = require('./src/routes/premio');
+const puntaje = require('./src/routes/puntaje');
 const cors = require('cors');
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(express.json());
 
 app.use('/empleado', empleado)
 app.use('/premio', premio)
+app.use('/puntaje', puntaje)
 
 
 app.listen(port, () => {

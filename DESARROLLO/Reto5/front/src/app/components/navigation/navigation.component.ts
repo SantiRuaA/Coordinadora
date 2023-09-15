@@ -28,8 +28,9 @@ export class NavigationComponent {
 
 
     this.modules = [
-      { name: 'Empleados', route: '/empleado' },
-      { name: 'Premios', route: '/premio' },
+      { name: 'Empleados', route: '/empleados' },
+      { name: 'Premios', route: '/premios' },
+      { name: 'Puntajes', route: '/puntajes'}
 
     ];
   }

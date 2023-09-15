@@ -7,31 +7,43 @@ router.get('/', async (req, res) => {
     res.json(premios);
 });
 
-router.post('/', async (req, res) => {
-    const {id, nombre, descripcion, puntos} = req.body;
+router.get('/:id', async (req, res) => {
+    const {id} = req.params;
+    const premio = await Premio.findByPk(id);
+    res.json(premio);
+});
 
-    const premioC = await Premio.create({id, nombre, descripcion, puntos})
+router.post('/', async (req, res) => {
+    const {idPremio, nombre, descripcion} = req.body;
+
+    const premioC = await Premio.create({idPremio, nombre, descripcion})
     res.json({
         status: 'ok',
         msj: 'Premio creado correctamente',
+        Premio: premioC
     });
 });
 
 router.put('/:id', async (req, res) => {
     const {id} = req.params;
-    const {nombre, descripcion, puntos} = req.body;
+    const {idPremio, nombre, descripcion} = req.body;
 
-    const premioU = await Premio.update({nombre, descripcion, puntos}, {where: {id}})
+    const premioU = await Premio.findByPk(idPremio);
+
+    await premioU.update({idPremio, nombre, descripcion}), {where: {id}}
     res.json({
         status: 'ok',
         msj: 'Premio actualizado correctamente',
+        Premio: premioU
     });
 });
 
 router.delete('/:id', async (req, res) => {
     const {id} = req.params;
 
-    const premioD = await Premio.destroy({where: {id}})
+    const premioD = await Premio.findByPk(id);
+
+    await premioD.destroy()
     res.json({
         status: 'ok',
         msj: 'Premio eliminado correctamente',

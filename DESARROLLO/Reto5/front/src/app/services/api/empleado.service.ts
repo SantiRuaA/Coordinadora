@@ -25,6 +25,12 @@ export class EmpleadoService {
         return this.http.get<EmpleadoInterface[]>(address, { headers });
     }
 
+    getOneEmpleados(id: any): Observable<EmpleadoInterface> {
+        let address = this.url + 'empleado/' + id;
+        const headers = this.getHeaders();
+        return this.http.get<EmpleadoInterface>(address, { headers });
+    }
+
     postEmpleados(form: EmpleadoInterface): Observable<ResponseInterface> {
         let address = this.url + 'empleado';
         const headers = this.getHeaders();

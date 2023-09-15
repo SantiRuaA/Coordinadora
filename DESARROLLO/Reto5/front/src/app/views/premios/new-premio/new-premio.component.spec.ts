@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PuntajesComponent } from './puntajes.component';
+import { NewPremioComponent } from './new-premio.component';
 
-describe('PuntajesComponent', () => {
-  let component: PuntajesComponent;
-  let fixture: ComponentFixture<PuntajesComponent>;
+describe('NewPremioComponent', () => {
+  let component: NewPremioComponent;
+  let fixture: ComponentFixture<NewPremioComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PuntajesComponent]
+      declarations: [NewPremioComponent]
     });
-    fixture = TestBed.createComponent(PuntajesComponent);
+    fixture = TestBed.createComponent(NewPremioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

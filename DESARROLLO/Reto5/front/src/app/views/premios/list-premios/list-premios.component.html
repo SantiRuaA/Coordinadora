@@ -6,10 +6,10 @@
   <app-navigation>
     <div class="container">
       <br>
-      <h1>Clientes</h1>
+      <h1>Premios</h1>
       <div class="row">
         <div class="col-12 col-md-6">
-          <button mat-raised-button color="primary" (click)="newEmpleado()" style="margin-top: 20px;">
+          <button mat-raised-button color="primary" (click)="newPremio()" style="margin-top: 20px;">
             <mat-icon>add</mat-icon> Nuevo
           </button>
         </div>
@@ -18,7 +18,7 @@
           <div class="d-flex justify-content-end">
             <mat-form-field appearance="outline">
               <mat-label>Búsqueda</mat-label>
-              <input matInput (keyup)="applyFilter($event)" placeholder="Ej: Juan" #input autocomplete="off">
+              <input matInput (keyup)="applyFilter($event)" placeholder="Ej: Vacaciones" #input autocomplete="off">
               <button mat-button matSuffix disabled>
                 <mat-icon color="primary">search</mat-icon>
               </button>
@@ -31,45 +31,35 @@
         <table mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="num">
             <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let empleado; let i = index" class="max-width-cell">{{ i + 1 }}</td>
+            <td mat-cell *matCellDef="let premio; let i = index" class="max-width-cell">{{ i + 1 }}</td>
           </ng-container>
   
-          <ng-container matColumnDef="nombreEmpleado">
+          <ng-container matColumnDef="nombrePremio">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.nombre }}</td>
+            <td mat-cell *matCellDef="let premio" class="max-width-cell">{{ premio.nombre }}</td>
           </ng-container>
   
-          <ng-container matColumnDef="telefonoEmpleado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.telefono }}</td>
-          </ng-container>
-  
-          <ng-container matColumnDef="correoEmpleado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.correo }}</td>
-          </ng-container>
-  
-          <ng-container matColumnDef="direccionEmpleado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Dirección</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.direccion }}</td>
+          <ng-container matColumnDef="descripcionPremio">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
+            <td mat-cell *matCellDef="let premio" class="max-width-cell">{{ premio.descripcion }}</td>
           </ng-container>
   
           <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let empleado">
+            <td mat-cell *matCellDef="let premio">
               <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #actionsMenu="matMenu">
-                <button mat-menu-item (click)="viewEmpleado(empleado)">
+                <button mat-menu-item (click)="viewPremio(premio)">
                   <mat-icon [ngStyle]="{'color': '#AED581'}">visibility</mat-icon>
                   <span>Ver</span>
                 </button>
-                <button mat-menu-item (click)="editEmpleado(empleado.idEmpleado)">
+                <button mat-menu-item (click)="editPremio(premio.idPremio)">
                   <mat-icon [ngStyle]="{'color': '#1A237E'}">edit</mat-icon>
                   <span>Editar</span>
                 </button>
-                <button mat-menu-item (click)="deleteEmpleado(empleado.idEmpleado)">
+                <button mat-menu-item (click)="deletePremio(premio.idPremio)">
                   <mat-icon [ngStyle]="{'color': 'red'}">delete</mat-icon>
                   <span>Eliminar</span>
                 </button>
@@ -78,10 +68,10 @@
           </ng-container>
   
           <tr mat-header-row
-            *matHeaderRowDef="['num', 'nombreEmpleado', 'telefonoEmpleado', 'correoEmpleado', 'direccionEmpleado', 'acciones']">
+            *matHeaderRowDef="['num', 'nombrePremio', 'descripcionPremio', 'acciones']">
           </tr>
           <tr mat-row
-            *matRowDef="let row; columns: ['num', 'nombreEmpleado', 'telefonoEmpleado', 'correoEmpleado', 'direccionEmpleado', 'acciones']">
+            *matRowDef="let row; columns: ['num', 'nombrePremio', 'descripcionPremio', 'acciones']">
           </tr>
         </table>
       </div>
@@ -94,12 +84,10 @@
       <br><br>
     </div>
   </app-navigation>
-  <ng-template #viewEmpleadoDialog let-dialogData>
+  <ng-template #viewPremioDialog let-dialogData>
     <div class="dialogData">
-      <h2>Información del empleado</h2>
+      <h2>Información del premio</h2>
       <p><strong>Nombre:</strong> {{ dialogData.nombre }}</p>
-      <p><strong>Teléfono:</strong> {{ dialogData.telefono }}</p>
-      <p><strong>Correo:</strong> {{ dialogData.correo }}</p>
-      <p><strong>Dirección:</strong> {{ dialogData.direccion }}</p>
+      <p><strong>Descripción:</strong> {{ dialogData.descripcion }}</p>
     </div>
   </ng-template>

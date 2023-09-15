@@ -2,42 +2,54 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EmpleadoService } from '../../../services/api/empleado.service';
-import { EmpleadoInterface } from '../../../models/empleado.interface';
+import { PuntajeService } from '../../../services/api/puntaje.service';
+import { PuntajeInterface } from '../../../models/puntaje.interface';
+import { EmpleadoInterface } from 'src/app/models/empleado.interface';
+import { PremioInterface } from 'src/app/models/premio.interface';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-new-empleado',
-  templateUrl: './new-empleado.component.html',
-  styleUrls: ['./new-empleado.component.css']
+  selector: 'app-new-puntaje',
+  templateUrl: './new-puntaje.component.html',
+  styleUrls: ['./new-puntaje.component.css']
 })
-export class NewEmpleadoComponent implements OnInit, OnDestroy {
+export class NewPuntajeComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputPlaces') inputPlaces!: ElementRef;
 
 
   constructor(
     private router: Router,
-    private api: EmpleadoService,
+    private api: PuntajeService,
   ) { }
 
   private subscriptions: Subscription = new Subscription();
+
+  empleado: EmpleadoInterface[] = []
+  premio: PremioInterface[] = []
   loading: boolean = true;
 
 
-
   newForm = new FormGroup({
-    idEmpleado: new FormControl(''),
-    nombre: new FormControl('', Validators.required),
-    telefono: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]), // Agregamos la validación de patrón usando Validators.pattern
-    correo: new FormControl('', [Validators.required, Validators.pattern('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')]),
-    direccion: new FormControl('', Validators.required),
+    idPuntaje: new FormControl(''),
+    idEmpleado: new FormControl('', Validators.required),
+    idPremio: new FormControl('', Validators.required),
+    puntaje: new FormControl('', Validators.required),
   })
 
 
   ngOnInit(): void {
-    this.loading = false;
+    const getEmpleado = this.api.getEmpleado().subscribe(data => {
+      this.empleado = data;
+      this.loading = false;
+    });
+    const getPremio = this.api.getPremio().subscribe(data => {
+      this.premio = data;
+      this.loading = false;
+    });
+    this.subscriptions.add(getEmpleado);
+    this.subscriptions.add(getPremio);
   }
 
 
@@ -46,10 +58,10 @@ export class NewEmpleadoComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  postForm(form: EmpleadoInterface) {
+  postForm(form: PuntajeInterface) {
     Swal.fire({
       icon: 'question',
-      title: '¿Estás seguro de que deseas crear este empleado?',
+      title: '¿Estás seguro de que deseas crear este puntaje?',
       showCancelButton: true,
       showCloseButton: true,
       allowOutsideClick: false,
@@ -59,14 +71,14 @@ export class NewEmpleadoComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.loading = true;
-        const postCltSub = this.api.postEmpleados(form).subscribe(data => {
+        const postCltSub = this.api.postPuntajes(form).subscribe(data => {
           if (data.status == 'ok') {
             this.newForm.reset();
-            this.router.navigate(['empleados/list-empleados']);
+            this.router.navigate(['puntajes/list-puntajes']);
             Swal.fire({
               icon: 'success',
-              title: 'empleado creado',
-              text: 'El empleado ha sido creado exitosamente.',
+              title: 'Puntaje creado',
+              text: 'El puntaje ha sido creado exitosamente.',
               toast: true,
               showConfirmButton: false,
               timer: 5000,
@@ -99,6 +111,7 @@ export class NewEmpleadoComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.loading = true;
-    this.router.navigate(['empleados/list-empleados']);
+    this.router.navigate(['puntajes/list-puntajes']);
   }
 }
+

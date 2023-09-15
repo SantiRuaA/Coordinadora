@@ -19,10 +19,16 @@ export class PremioService {
         return headers;
     }
 
-    getAllPremios(form: PremioInterface): Observable<ResponseInterface> {
+    getAllPremios(): Observable<PremioInterface[]> {
         let address = this.url + 'premio';
         const headers = this.getHeaders();
-        return this.http.post<ResponseInterface>(address, form, { headers });
+        return this.http.get<PremioInterface[]>(address, { headers });
+    }
+
+    getOnePremios(id: any): Observable<PremioInterface> {
+        let address = this.url + 'premio/' + id;
+        const headers = this.getHeaders();
+        return this.http.get<PremioInterface>(address, { headers });
     }
 
     postPremios(form: PremioInterface): Observable<ResponseInterface> {

@@ -7,31 +7,42 @@ router.get('/', async (req, res) => {
     res.json(empleados);
 });
 
-router.post('/', async (req, res) => {
-    const {id, nombre, telefono, correo, direccion} = req.body;
+router.get('/:id', async (req, res) => {
+    const {id} = req.params;
+    const empleado = await Empleado.findByPk(id);
+    res.json(empleado);
+});
 
-    const empleadoC = await Empleado.create({id, nombre, telefono, correo, direccion})
+router.post('/', async (req, res) => {
+    const {idEmpleado, nombre, telefono, correo, direccion} = req.body;
+
+    const empleadoC = await Empleado.create({idEmpleado, nombre, telefono, correo, direccion})
     res.json({
         status: 'ok',
         msj: 'Empleado creado correctamente',
+        Empleado: empleadoC
     });
 });
 
 router.put('/:id', async (req, res) => {
     const {id} = req.params;
-    const {nombre, telefono, correo, direccion} = req.body;
+    const {idEmpleado, nombre, telefono, correo, direccion} = req.body;
 
-    const empleadoU = await Empleado.update({nombre, telefono, correo, direccion}, {where: {id}})
+    const empleadoU = await Empleado.findByPk(idEmpleado);
+
+    await empleadoU.update({idEmpleado, nombre, telefono, correo, direccion}, {where: {id}})
     res.json({
         status: 'ok',
         msj: 'Empleado actualizado correctamente',
+        Empleado: empleadoU
     });
 });
 
 router.delete('/:id', async (req, res) => {
     const {id} = req.params;
+    const empleadoD = await Empleado.findByPk(id);
 
-    const empleadoD = await Empleado.destroy({where: {id}})
+    await empleadoD.destroy()
     res.json({
         status: 'ok',
         msj: 'Empleado eliminado correctamente',

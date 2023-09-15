@@ -2,7 +2,7 @@ const {DataTypes} = require('sequelize');
 const db = require('../db/database');
 
 const Premio = db.define('premio', {
-    id: {
+    idPremio: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -12,10 +12,7 @@ const Premio = db.define('premio', {
     },
     descripcion: {
         type: DataTypes.STRING,
-    },
-    puntos: {
-        type: DataTypes.INTEGER,
-    },
+    }
 });
 
 module.exports = Premio;

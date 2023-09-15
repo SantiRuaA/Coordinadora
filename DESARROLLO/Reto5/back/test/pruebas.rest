@@ -6,8 +6,7 @@ Content-Type: application/json
     
     {
         "nombre": "Viaje a la playa",
-        "descripcion": "Gano un viajesito a la playa",
-        "puntos": 200
+        "descripcion": "Gano un viajesito a la playa"
     }
 
 ###
@@ -17,8 +16,7 @@ Content-Type: application/json
     
     {
         "nombre": "Viaje a mi casa",
-        "descripcion": "Gano un viajesito a mi casa",
-        "puntos": 100
+        "descripcion": "Gano un viajesito a mi casa"
     }
 
 ###

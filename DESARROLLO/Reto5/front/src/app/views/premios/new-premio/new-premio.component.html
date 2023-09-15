@@ -1,0 +1,54 @@
+<div class="spinner-overlay" *ngIf="loading">
+    <div class="spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </div>
+  
+  <app-navigation>
+    <div class="container">
+      <br>
+      <h2>Crear premio</h2>
+      <br>
+      <div class="container">
+        <form [formGroup]="newForm" (ngSubmit)="postForm(newForm.value)">
+          <div class="row">
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Nombre <b style="color: red;">*</b></label>
+                <input type="text" class="form-control" formControlName="nombre" [ngClass]="{
+                  'is-invalid': newForm.get('nombre')?.invalid && (newForm.get('nombre')?.touched || newForm.get('nombre')?.dirty),
+                  'is-valid': newForm.get('nombre')?.valid && (newForm.get('nombre')?.touched || newForm.get('nombre')?.dirty)
+                }">
+  
+                <div *ngIf="newForm.get('nombre')?.errors?.['required']" class="invalid-feedback">
+                  Este campo es obligatorio.
+                </div>
+              </div>
+            </div>
+            <div class="col">
+              <div class="form-group">
+                <label for="exampleFormControlInput1">Descripcion <b style="color: red;">*</b></label>
+                <input type="text" class="form-control" formControlName="descripcion" [ngClass]="{
+                  'is-invalid': newForm.get('descripcion')?.invalid && (newForm.get('descripcion')?.touched || newForm.get('descripcion')?.dirty),
+                  'is-valid': newForm.get('descripcion')?.valid && (newForm.get('descripcion')?.touched || newForm.get('descripcion')?.dirty)
+                }">
+                <div *ngIf="newForm.get('descripcion')?.errors?.['required']" class="invalid-feedback">
+                  Este campo es obligatorio.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <br>
+  
+          <button type="button" mat-raised-button color="accent" (click)="goBack()">Atrás</button> |
+          <button type="submit" mat-raised-button color="primary" [disabled]="newForm.invalid">Guardar</button>
+          <br><br>
+        </form>
+      </div>
+    </div>
+  </app-navigation>
+  
+  <ng-template #viewMap>
+    <div id="map" style="width: 100%; height: 400px;"></div>
+  </ng-template>

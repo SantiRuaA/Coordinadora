@@ -6,10 +6,10 @@
   <app-navigation>
     <div class="container">
       <br>
-      <h1>Clientes</h1>
+      <h1>Puntajes</h1>
       <div class="row">
         <div class="col-12 col-md-6">
-          <button mat-raised-button color="primary" (click)="newEmpleado()" style="margin-top: 20px;">
+          <button mat-raised-button color="primary" (click)="newPuntaje()" style="margin-top: 20px;">
             <mat-icon>add</mat-icon> Nuevo
           </button>
         </div>
@@ -31,45 +31,41 @@
         <table mat-table [dataSource]="dataSource" matSort>
           <ng-container matColumnDef="num">
             <th mat-header-cell *matHeaderCellDef>#</th>
-            <td mat-cell *matCellDef="let empleado; let i = index" class="max-width-cell">{{ i + 1 }}</td>
+            <td mat-cell *matCellDef="let puntaje; let i = index" class="max-width-cell">{{ i + 1 }}</td>
           </ng-container>
   
-          <ng-container matColumnDef="nombreEmpleado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.nombre }}</td>
+  
+          <ng-container matColumnDef="idEmpleado">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Empleado</th>
+            <td mat-cell *matCellDef="let puntaje" class="max-width-cell">{{ puntaje.idEmpleado }}</td>
           </ng-container>
   
-          <ng-container matColumnDef="telefonoEmpleado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.telefono }}</td>
+          <ng-container matColumnDef="idPremio">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Premio</th>
+            <td mat-cell *matCellDef="let puntaje" class="max-width-cell">{{ puntaje.idPremio }}</td>
           </ng-container>
   
-          <ng-container matColumnDef="correoEmpleado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.correo }}</td>
-          </ng-container>
-  
-          <ng-container matColumnDef="direccionEmpleado">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header>Dirección</th>
-            <td mat-cell *matCellDef="let empleado" class="max-width-cell">{{ empleado.direccion }}</td>
+          <ng-container matColumnDef="puntaje">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Puntaje</th>
+            <td mat-cell *matCellDef="let puntaje" class="max-width-cell">{{ puntaje.puntaje }}</td>
           </ng-container>
   
           <ng-container matColumnDef="acciones">
             <th mat-header-cell *matHeaderCellDef>Acciones</th>
-            <td mat-cell *matCellDef="let empleado">
+            <td mat-cell *matCellDef="let puntaje">
               <button mat-icon-button [matMenuTriggerFor]="actionsMenu">
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #actionsMenu="matMenu">
-                <button mat-menu-item (click)="viewEmpleado(empleado)">
+                <button mat-menu-item (click)="viewPuntaje(puntaje)">
                   <mat-icon [ngStyle]="{'color': '#AED581'}">visibility</mat-icon>
                   <span>Ver</span>
                 </button>
-                <button mat-menu-item (click)="editEmpleado(empleado.idEmpleado)">
+                <button mat-menu-item (click)="editPuntaje(puntaje.idPuntaje)">
                   <mat-icon [ngStyle]="{'color': '#1A237E'}">edit</mat-icon>
                   <span>Editar</span>
                 </button>
-                <button mat-menu-item (click)="deleteEmpleado(empleado.idEmpleado)">
+                <button mat-menu-item (click)="deletePuntaje(puntaje.idPuntaje)">
                   <mat-icon [ngStyle]="{'color': 'red'}">delete</mat-icon>
                   <span>Eliminar</span>
                 </button>
@@ -78,28 +74,25 @@
           </ng-container>
   
           <tr mat-header-row
-            *matHeaderRowDef="['num', 'nombreEmpleado', 'telefonoEmpleado', 'correoEmpleado', 'direccionEmpleado', 'acciones']">
+            *matHeaderRowDef="['num', 'idEmpleado', 'idPremio', 'puntaje', 'acciones']">
           </tr>
           <tr mat-row
-            *matRowDef="let row; columns: ['num', 'nombreEmpleado', 'telefonoEmpleado', 'correoEmpleado', 'direccionEmpleado', 'acciones']">
+            *matRowDef="let row; columns: ['num', 'idEmpleado', 'idPremio', 'puntaje', 'acciones']">
           </tr>
         </table>
       </div>
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator><br>
       <div *ngIf="dataSource.filteredData.length === 0" class="no-results-message" style="text-align: center;">
         <strong>NO SE ENCONTRARON RESULTADOS.</strong>
-      </div>
-  
-      
+        </div>
       <br><br>
     </div>
   </app-navigation>
-  <ng-template #viewEmpleadoDialog let-dialogData>
+  <ng-template #viewPuntajeDialog let-dialogData>
     <div class="dialogData">
-      <h2>Información del empleado</h2>
-      <p><strong>Nombre:</strong> {{ dialogData.nombre }}</p>
-      <p><strong>Teléfono:</strong> {{ dialogData.telefono }}</p>
-      <p><strong>Correo:</strong> {{ dialogData.correo }}</p>
-      <p><strong>Dirección:</strong> {{ dialogData.direccion }}</p>
+      <h2>Información del cliente</h2>
+      <p><strong>Empleado:</strong> {{ getEmpleado(dialogData.idEmpleado) }}</p>
+      <p><strong>Premio:</strong> {{ getPremio(dialogData.idPremio) }}</p>
+      <p><strong>Puntaje:</strong> {{ dialogData.puntaje }}</p>
     </div>
   </ng-template>

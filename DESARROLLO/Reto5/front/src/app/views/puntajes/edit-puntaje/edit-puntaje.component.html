@@ -1,0 +1,78 @@
+<div class="spinner-overlay" *ngIf="loading">
+    <div class="spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+</div>
+
+<app-navigation>
+    <div class="container">
+        <br>
+        <h2>Editar puntaje</h2>
+        <br>
+        <div class="container">
+            <form [formGroup]="editForm" (ngSubmit)="postForm(editForm.value)">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="idEmpleado">Empleado <b style="color: red;">*</b></label>
+                            <mat-select class="form-control" formControlName="idEmpleado"
+                                placeholder="---SELECCIONE---" [ngClass]="{
+                                'is-invalid': editForm.get('idEmpleado')?.invalid && (editForm.get('idEmpleado')?.touched || editForm.get('idEmpleado')?.dirty),
+                                'is-valid': editForm.get('idEmpleado')?.valid && (editForm.get('idEmpleado')?.touched || editForm.get('idEmpleado')?.dirty)
+                              }">
+                                <mat-option *ngFor="let empleado of empleado"
+                                    [value]="empleado.idEmpleado">{{ empleado.nombre }}
+                                </mat-option>
+                            </mat-select>
+
+                            <div *ngIf="editForm.get('idEmpleado')?.errors?.['required']" class="invalid-feedback">
+                                Este campo es obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label for="idPremio">Premio <b style="color: red;">*</b></label>
+                            <mat-select class="form-control" formControlName="idPremio"
+                                placeholder="---SELECCIONE---" [ngClass]="{
+                                'is-invalid': editForm.get('idPremio')?.invalid && (editForm.get('idPremio')?.touched || editForm.get('idPremio')?.dirty),
+                                'is-valid': editForm.get('idPremio')?.valid && (editForm.get('idPremio')?.touched || editForm.get('idPremio')?.dirty)
+                              }">
+                                <mat-option *ngFor="let premio of premio"
+                                    [value]="premio.idPremio">{{ premio.nombre }}
+                                </mat-option>
+                            </mat-select>
+
+                            <div *ngIf="editForm.get('idPremio')?.errors?.['required']" class="invalid-feedback">
+                                Este campo es obligatorio.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                      <div class="form-group">
+                        <label for="exampleFormControlInput1">Puntaje <b style="color: red;">*</b></label>
+                        <input type="text" class="form-control" formControlName="puntaje" [ngClass]="{
+                          'is-invalid': editForm.get('puntaje')?.invalid && (editForm.get('puntaje')?.touched || editForm.get('puntaje')?.dirty),
+                          'is-valid': editForm.get('puntaje')?.valid && (editForm.get('puntaje')?.touched || editForm.get('puntaje')?.dirty)
+                        }">
+                        <div *ngIf="editForm.get('puntaje')?.errors?.['required']" class="invalid-feedback">
+                          Este campo es obligatorio.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                <br>
+
+                <button type="button" mat-raised-button color="accent" (click)="goBack()">Atrás</button> |
+                <button type="submit" mat-raised-button color="primary" [disabled]="editForm.invalid">Editar</button>
+                <br><br>
+            </form>
+        </div>
+    </div>
+</app-navigation>
+
+<ng-template #viewMap>
+    <div id="map" style="width: 100%; height: 400px;"></div>
+</ng-template>

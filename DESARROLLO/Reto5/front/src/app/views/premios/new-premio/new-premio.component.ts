@@ -2,24 +2,24 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { EmpleadoService } from '../../../services/api/empleado.service';
-import { EmpleadoInterface } from '../../../models/empleado.interface';
+import { PremioService } from '../../../services/api/premio.service';
+import { PremioInterface } from '../../../models/premio.interface';
 import { Subscription } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-new-empleado',
-  templateUrl: './new-empleado.component.html',
-  styleUrls: ['./new-empleado.component.css']
+  selector: 'app-new-premio',
+  templateUrl: './new-premio.component.html',
+  styleUrls: ['./new-premio.component.css']
 })
-export class NewEmpleadoComponent implements OnInit, OnDestroy {
+export class NewPremioComponent implements OnInit, OnDestroy {
 
   @ViewChild('inputPlaces') inputPlaces!: ElementRef;
 
 
   constructor(
     private router: Router,
-    private api: EmpleadoService,
+    private api: PremioService,
   ) { }
 
   private subscriptions: Subscription = new Subscription();
@@ -28,11 +28,9 @@ export class NewEmpleadoComponent implements OnInit, OnDestroy {
 
 
   newForm = new FormGroup({
-    idEmpleado: new FormControl(''),
+    id: new FormControl(''),
     nombre: new FormControl('', Validators.required),
-    telefono: new FormControl('', [Validators.required, Validators.pattern('^[0-9]{10}$')]), // Agregamos la validación de patrón usando Validators.pattern
-    correo: new FormControl('', [Validators.required, Validators.pattern('^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$')]),
-    direccion: new FormControl('', Validators.required),
+    descripcion: new FormControl('', Validators.required),
   })
 
 
@@ -46,10 +44,10 @@ export class NewEmpleadoComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  postForm(form: EmpleadoInterface) {
+  postForm(form: PremioInterface) {
     Swal.fire({
       icon: 'question',
-      title: '¿Estás seguro de que deseas crear este empleado?',
+      title: '¿Estás seguro de que deseas crear este premio?',
       showCancelButton: true,
       showCloseButton: true,
       allowOutsideClick: false,
@@ -59,14 +57,14 @@ export class NewEmpleadoComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isConfirmed) {
         this.loading = true;
-        const postCltSub = this.api.postEmpleados(form).subscribe(data => {
+        const postCltSub = this.api.postPremios(form).subscribe(data => {
           if (data.status == 'ok') {
             this.newForm.reset();
-            this.router.navigate(['empleados/list-empleados']);
+            this.router.navigate(['premios/list-premios']);
             Swal.fire({
               icon: 'success',
-              title: 'empleado creado',
-              text: 'El empleado ha sido creado exitosamente.',
+              title: 'Premio creado',
+              text: 'El premio ha sido creado exitosamente.',
               toast: true,
               showConfirmButton: false,
               timer: 5000,
@@ -99,6 +97,6 @@ export class NewEmpleadoComponent implements OnInit, OnDestroy {
 
   goBack() {
     this.loading = true;
-    this.router.navigate(['empleados/list-empleados']);
+    this.router.navigate(['premios/list-premios']);
   }
 }

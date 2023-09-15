@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { EmpleadoService } from 'src/app/services/api/empleado.service';
+import { PremioService } from 'src/app/services/api/premio.service';
 import { Router } from '@angular/router';
-import { EmpleadoInterface } from 'src/app/models/empleado.interface';
+import { PremioInterface } from 'src/app/models/premio.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -10,41 +10,41 @@ import { Subscription, forkJoin } from 'rxjs';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-list-empleados',
-  templateUrl: './list-empleados.component.html',
-  styleUrls: ['./list-empleados.component.css']
+  selector: 'app-list-premios',
+  templateUrl: './list-premios.component.html',
+  styleUrls: ['./list-premios.component.css']
 })
-export class ListEmpleadosComponent implements OnInit, OnDestroy {
+export class ListPremiosComponent implements OnInit, OnDestroy {
 
   constructor(
-    private api: EmpleadoService,
+    private api: PremioService,
     private router: Router,
     private dialog: MatDialog,
   ) { }
 
   private subscriptions: Subscription = new Subscription();
 
-  empleados: EmpleadoInterface[] = [];
-  dataSource = new MatTableDataSource(this.empleados);
+  premios: PremioInterface[] = [];
+  dataSource = new MatTableDataSource(this.premios);
   loading: boolean = true;
   dataToExport: any[] = [];
 
   @ViewChild(MatPaginator) paginator!: MatPaginator; //para la paginacion, y los del ! pal not null
   @ViewChild(MatSort) sort!: MatSort; //para el ordenamiento
-  @ViewChild('viewEmpleadoDialog') viewEmpleadoDialog!: TemplateRef<any>;
+  @ViewChild('viewPremioDialog') viewPremioDialog!: TemplateRef<any>;
 
   ngOnInit(): void {
     this.loading = true;
 
     const forkJoinSub = forkJoin([
-      this.api.getAllEmpleados(),
-    ]).subscribe(([empleados]) => {
-      this.empleados = empleados;
-      this.dataSource.data = this.empleados;
+      this.api.getAllPremios(),
+    ]).subscribe(([premios]) => {
+      this.premios = premios;
+      this.dataSource.data = this.premios;
       if (this.dataSource.data.length < 1) {
         Swal.fire({
-          title: 'No hay empleados registrados',
-          text: 'No se encontraron empleados en el sistema.',
+          title: 'No hay premios registrados',
+          text: 'No se encontraron premios en el sistema.',
           icon: 'info',
           toast: true,
           showConfirmButton: false,
@@ -78,28 +78,28 @@ export class ListEmpleadosComponent implements OnInit, OnDestroy {
   }
 
 
-  viewEmpleado(empleado: EmpleadoInterface): void {
-    this.dialog.open(this.viewEmpleadoDialog, {
-      data: empleado,
+  viewPremio(premio: PremioInterface): void {
+    this.dialog.open(this.viewPremioDialog, {
+      data: premio,
       width: '35%',
       height: 'auto',
     });
   }
 
-  editEmpleado(id: any) {
+  editPremio(id: any) {
     this.loading = true;
-    this.router.navigate(['empleados/edit-empleado', id]);
+    this.router.navigate(['premios/edit-premio', id]);
   }
 
-  newEmpleado() {
+  newPremio() {
     this.loading = true;
-    this.router.navigate(['empleados/new-empleado']);
+    this.router.navigate(['premios/new-premio']);
   }
 
-  deleteEmpleado(id: any): void {
+  deletePremio(id: any): void {
     Swal.fire({
       icon: 'question',
-      title: '¿Estás seguro de que deseas eliminar este empleado?',
+      title: '¿Estás seguro de que deseas eliminar este premio?',
       showDenyButton: true,
       showCancelButton: true,
       showConfirmButton: false,
@@ -109,15 +109,15 @@ export class ListEmpleadosComponent implements OnInit, OnDestroy {
     }).then((result) => {
       if (result.isDenied) {
         this.loading = true;
-        this.api.deleteEmpleados(id).subscribe(
+        this.api.deletePremios(id).subscribe(
           data => {
             if (data.status == 'ok') {
-              this.empleados = this.empleados.filter(empleado => empleado.idEmpleado !== id);
-              this.dataSource.data = this.empleados; // Actualizar el dataSource con los nuevos datos
+              this.premios = this.premios.filter(premio => premio.idPremio !== id);
+              this.dataSource.data = this.premios; // Actualizar el dataSource con los nuevos datos
               Swal.fire({
                 icon: 'success',
-                title: 'Empleado eliminado',
-                text: 'El empleado ha sido eliminado exitosamente.',
+                title: 'Premio eliminado',
+                text: 'El premio ha sido eliminado exitosamente.',
                 toast: true,
                 showConfirmButton: false,
                 timer: 5000,
