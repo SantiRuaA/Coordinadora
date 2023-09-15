@@ -3,7 +3,7 @@ const startButton = document.getElementById('startButton');
 const usedLettersElement = document.getElementById('usedLetters');
 
 let canvas = document.getElementById('canvas');
-let ctx = canvas.getContext('2d');
+let ctx = canvas.getContext('2d'); //llama al metodo getContext() del objeto canvas, que devuelve un objeto que representa un contexto de dibujo en el lienzo
 let puntaje = 0;
 let numIntentos = 0;
 let fecha = new Date();
@@ -15,13 +15,13 @@ ctx.canvas.width = 120;
 ctx.canvas.height = 160;
 ctx.scale(20, 20);
 
-const bodyParts = [
-    [4, 2, 1, 1],
-    [4, 3, 1, 2],
-    [3, 5, 1, 1],
-    [5, 5, 1, 1],
-    [3, 3, 1, 1],
-    [5, 3, 1, 1]
+const bodyParts = [  //valores que se usan para dibujar el ahorcado en el canvas
+    [4, 2, 1, 1],  //cabeza
+    [4, 3, 1, 2],  //cuerpo
+    [3, 5, 1, 1],  //brazo izquierdo
+    [5, 5, 1, 1],  //brazo derecho
+    [3, 3, 1, 1],  //pierna izquierda
+    [5, 3, 1, 1]  //pierna derecha
 ];
 
 let selectedWord;
@@ -162,15 +162,15 @@ async function guardarDatos() {
 }
 
 const drawHangMan = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#d95d39';
-    ctx.fillRect(0, 7, 4, 1);
-    ctx.fillRect(1, 0, 1, 8);
-    ctx.fillRect(2, 0, 3, 1);
-    ctx.fillRect(4, 1, 1, 1);
+    ctx.clearRect(0, 0, canvas.width, canvas.height); //limpia el canvas
+    ctx.fillStyle = '#d95d39'; //color de las partes del cuerpo
+    ctx.fillRect(0, 7, 4, 1); //dibuja la base
+    ctx.fillRect(1, 0, 1, 8); //dibuja el palo
+    ctx.fillRect(2, 0, 3, 1); //dibuja la viga
+    ctx.fillRect(4, 1, 1, 1); //dibuja la cuerda
 };
 
-const startGame = () => {
+const startGame = () => {  //setear variables y llamar a funciones
     usedLetters = [];
     mistakes = 0;
     hits = 0;

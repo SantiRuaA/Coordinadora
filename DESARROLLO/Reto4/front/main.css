@@ -173,4 +173,5 @@ body {
   margin-top: 10px; /* Espacio superior */
   text-align: center; /* Centra el contenido horizontalmente */
   font-weight: bold; /* Texto en negrita */
+  display: flex;;
 }
